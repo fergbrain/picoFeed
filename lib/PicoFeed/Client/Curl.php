@@ -112,7 +112,7 @@ class Curl extends Client
 
             // Do not work with PHP-FPM
             if (strpos(PHP_SAPI, 'cgi') !== false) {
-                header(':', true, $status);
+                http_response_code($status);
             }
 
             if (isset($headers['Content-Type'])) {
