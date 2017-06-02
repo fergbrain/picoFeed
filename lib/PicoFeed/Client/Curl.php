@@ -111,7 +111,8 @@ class Curl extends Client
             }
 
             $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
-            $status_line = explode(" ", explode("\n", $this->response_headers[$this->response_headers_count - 1])[0]);
+            $all_response = explode("\n", $this->response_headers[$this->response_headers_count - 1]);
+            $status_line = explode(" ", $all_response[0]);
             header($protocol . ' ' . $status_line[1] . ' ' . $status_line[2]);
 
             if (isset($headers['Content-Type'])) {
