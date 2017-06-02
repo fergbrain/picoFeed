@@ -110,10 +110,9 @@ class Curl extends Client
                 return $this->handleRedirection($headers['Location']);
             }
 
-            // Do not work with PHP-FPM
-            if (strpos(PHP_SAPI, 'cgi') !== false) {
-                http_response_code($status);
-            }
+            $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
+            $status_line = explode(" ", explode("\n", $this->response_headers[$this->response_headers_count - 1])[0]);
+            header($protocol . ' ' . $status_line[1] . ' ' . $status_line[2]);
 
             if (isset($headers['Content-Type'])) {
                 header('Content-Type:' .$headers['Content-Type']);
