@@ -110,11 +110,14 @@ class Curl extends Client
                 return $this->handleRedirection($headers['Location']);
             }
 
+            $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
             if($status > 0){
-                $protocol = (isset($_SERVER['SERVER_PROTOCOL']) ? $_SERVER['SERVER_PROTOCOL'] : 'HTTP/1.0');
                 $all_response = explode("\n", $this->response_headers[$this->response_headers_count - 1]);
                 $status_line = explode(" ", $all_response[0]);
                 header($protocol . ' ' . $status_line[1] . ' ' . $status_line[2]);
+            }
+            else{
+                header($protocol . ' 502 Bad Gateway');
             }
             if (isset($headers['Content-Type'])) {
                 header('Content-Type:' .$headers['Content-Type']);
